@@ -1,0 +1,50 @@
+﻿@model FlightBooking.ViewModels.SearchRequestViewModel
+
+@{
+    ViewBag.Title = "Flight Search";
+}
+
+<h2>Flight Search</h2>
+
+@using (Html.BeginForm("Search", "FlightSearch", FormMethod.Post))
+{
+    @Html.ValidationSummary(true)
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Origin)
+        @Html.TextBoxFor(model => model.Origin, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.Origin)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Destination)
+        @Html.TextBoxFor(model => model.Destination, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.Destination)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.DepartureDate)
+        @Html.TextBoxFor(model => model.DepartureDate, "{0:yyyy-MM-dd}", new { @class = "form-control datepicker" })
+        @Html.ValidationMessageFor(model => model.DepartureDate)
+    </div>
+
+@*     <div class="form-group">
+        @Html.LabelFor(model => model.ReturnDate)
+        @Html.TextBoxFor(model => model.ReturnDate, "{0:yyyy-MM-dd}", new { @class = "form-control datepicker" })
+        @Html.ValidationMessageFor(model => model.ReturnDate)
+    </div> *@
+
+    <button type="submit" class="btn btn-primary">Search</button>
+}
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+    <script>
+        $(function () {
+            $(".datepicker").datepicker();
+        });
+    </script>
+}
