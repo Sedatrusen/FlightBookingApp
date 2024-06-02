@@ -1,7 +1,9 @@
-﻿
+﻿using FlightBooking.Models;
 using FlightBooking.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using ServiceReference;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace FlightBooking.Controllers
 {
@@ -10,7 +12,8 @@ namespace FlightBooking.Controllers
         // GET: FlightSearch
         public ActionResult Index()
         {
-            return View();
+            var searchRequest = new SearchRequestViewModel();
+            return View(searchRequest);
         }
 
         // POST: FlightSearch/Search
@@ -19,7 +22,7 @@ namespace FlightBooking.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View("Index", model);
+                return PartialView("_SearchForm", model);
             }
 
             var searchClient = new AirSearchClient();
@@ -32,7 +35,19 @@ namespace FlightBooking.Controllers
 
             var searchResult = await searchClient.AvailabilitySearchAsync(searchRequest);
 
-            return View("SearchResults", searchResult.FlightOptions);
+            return PartialView("_SearchResults", searchResult.FlightOptions);
         }
-    }  
+
+        // GET: FlightSearch/Details
+        public ActionResult Details(string flightNumber, string departureDateTime)
+        {
+            var model = new FlightDetailsViewModel
+            {
+                FlightNumber = flightNumber,
+                DepartureDateTime = departureDateTime
+            };
+
+            return PartialView("_FlightDetails", model);
+        }
+    }
 }

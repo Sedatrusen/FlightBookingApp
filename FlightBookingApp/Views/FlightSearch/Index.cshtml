@@ -6,36 +6,17 @@
 
 <h2>Flight Search</h2>
 
-@using (Html.BeginForm("Search", "FlightSearch", FormMethod.Post))
-{
-    @Html.ValidationSummary(true)
+<div id="searchFormContainer">
+    @Html.Partial("_SearchForm", Model)
+</div>
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.Origin)
-        @Html.TextBoxFor(model => model.Origin, new { @class = "form-control" })
-        @Html.ValidationMessageFor(model => model.Origin)
-    </div>
+<div id="searchResultsContainer">
+    <!-- Search results will be loaded here -->
+</div>
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.Destination)
-        @Html.TextBoxFor(model => model.Destination, new { @class = "form-control" })
-        @Html.ValidationMessageFor(model => model.Destination)
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.DepartureDate)
-        @Html.TextBoxFor(model => model.DepartureDate, "{0:yyyy-MM-dd}", new { @class = "form-control datepicker" })
-        @Html.ValidationMessageFor(model => model.DepartureDate)
-    </div>
-
-@*     <div class="form-group">
-        @Html.LabelFor(model => model.ReturnDate)
-        @Html.TextBoxFor(model => model.ReturnDate, "{0:yyyy-MM-dd}", new { @class = "form-control datepicker" })
-        @Html.ValidationMessageFor(model => model.ReturnDate)
-    </div> *@
-
-    <button type="submit" class="btn btn-primary">Search</button>
-}
+<div id="flightDetailsContainer">
+    <!-- Flight details will be loaded here -->
+</div>
 
 @section Scripts {
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -45,6 +26,24 @@
     <script>
         $(function () {
             $(".datepicker").datepicker();
+
+            // Handle form submission and load search results
+            $("#searchForm").submit(function (event) {
+                event.preventDefault();
+                var $form = $(this);
+                $.post($form.attr("action"), $form.serialize(), function (data) {
+                    $("#searchResultsContainer").html(data);
+                });
+            });
+
+            // Handle details link click and load flight details
+            $(document).on("click", ".detailsLink", function (event) {
+                event.preventDefault();
+                var $link = $(this);
+                $.get($link.attr("href"), function (data) {
+                    $("#flightDetailsContainer").html(data);
+                });
+            });
         });
     </script>
 }

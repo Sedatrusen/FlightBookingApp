@@ -1,0 +1,30 @@
+﻿@model IEnumerable<ServiceReference.FlightOption>
+
+<h2>Search Results</h2>
+
+@if (Model != null && Model.Any())
+{
+    <table class="table">
+        <tr>
+            <th>Flight Number</th>
+            <th>Departure Date Time</th>
+            <th>Arrival Date Time</th>
+            <th>Price</th>
+            <th></th>
+        </tr>
+        @foreach (var flightOption in Model)
+        {
+            <tr>
+                <td>@flightOption.FlightNumber</td>
+                <td>@flightOption.DepartureDateTime</td>
+                <td>@flightOption.ArrivalDateTime</td>
+                <td>@flightOption.Price</td>
+                <td>@Html.ActionLink("Details", "Details", "FlightSearch", new { flightNumber = flightOption.FlightNumber, departureDateTime = flightOption.DepartureDateTime }, new { @class = "detailsLink" })</td>
+            </tr>
+        }
+    </table>
+}
+else
+{
+    <p>No flights found.</p>
+}
